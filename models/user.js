@@ -9,6 +9,15 @@ const UserSchema = new Schema(
       min: 2,
       max: 80
     },
+    roles: {
+      type: [
+        {
+          type: String,
+          enum: ['admin', 'writer', 'guest']
+        }
+      ],
+      default: ['admin']
+    },
     lastName: {
       type: String,
       require: true,
@@ -32,10 +41,12 @@ UserSchema.method.fullName = function () {
   return `${this.firstName}  ${this.lastName}`;
 };
 
-// UserSchema.pre('save', next => {
-//   this.updateCounter++;
-//   //   this.save();
-//   next();
-// });
+UserSchema.pre('save', async function (next) {
+  this.updateCounter = 5;
+  this.save();
+
+  next();
+  console.log('THISSSSSSSSSSSS', this);
+});
 
 module.exports = mongoose.model('User', UserSchema);

@@ -11,16 +11,17 @@ module.exports = {createArticle, updateArticle, deleteArticle, getArticle};
 async function createArticle(req, res, next) {
   const fields = ['title', 'subTitle', 'description', 'owner', 'category'];
   const body = req.body;
-  const newArticle = _.pick(body, fields);
+  const payload = _.pick(body, fields);
   try {
     const existingArticle = await Article.findOne({title: body.title});
+    console.log('tittleeeeeeeeeeeeeeee', payload);
     if (existingArticle) {
-      throw utilError.badRequest(' Article exist!!');
+      throw utilError.badRequest(' Article already exist!!');
     }
 
-    const article = new Article(newArticle);
-    await article.save();
-    return res.status(200).json(article);
+    const article = new Article(payload);
+    const newArticle = await article.save();
+    return res.status(200).json(newArticle);
   } catch (error) {
     console.log(error);
     next(error);

@@ -8,15 +8,22 @@ const ArticleSchema = new Schema(
       type: String,
       min: 5,
       max: 400,
-      require: true,
-      index: true,
-      useCreateIndex: true
+      require: true
     },
 
     subTitle: {
       type: String,
       min: 5
     },
+    // category: {
+    //   type: [
+    //     {
+    //       type: String,
+    //       enum: ['sport', 'games', 'history']
+    //     }
+    //   ],
+    //   default: ['sport']
+    // },
     description: {
       type: String,
       min: 5,
@@ -24,15 +31,11 @@ const ArticleSchema = new Schema(
       require: true
     },
     owner: {type: Schema.Types.ObjectId, ref: 'User', require}
-    // category: [sport, games, history]
   },
+
   {
     timestamps: true
   }
 );
-
-// ArticleSchema.method.fullName = function () {
-//   return `${this.firstName}  ${this.lastName}`;
-// };
 
 module.exports = mongoose.model('Article', ArticleSchema);
